@@ -556,7 +556,7 @@ TODO
             options.hotkeys.down                 !== undefined || (options.hotkeys.down             = [40])
             options.handles                      !== undefined || (options.handles = {})
             options.handles.rotate               !== undefined || (options.handles.rotate = {})
-            options.handles.rotate.enabled       !== undefined || (options.handles.rotate.enabled = true)
+            options.handles.rotate.enabled       !== undefined || (options.handles.rotate.enabled = false)
             options.handles.rotate.diameter      !== undefined || (options.handles.rotate.diameter = 10)
             options.handles.resize               !== undefined || (options.handles.resize = {})
             options.handles.resize.enabled       !== undefined || (options.handles.resize.enabled = true)
@@ -600,6 +600,7 @@ TODO
             options.callbacks.ondelete           !== undefined || (options.callbacks.ondelete = null)
             options.mode                         !== undefined || (options.mode = "rectangle")
             options.debug                        !== undefined || (options.debug = false)
+            options.target_element               !== undefined || (options.target_element = null)
 
             // Global attributes
             this.options = options
@@ -1106,7 +1107,6 @@ TODO
             w2 = Math.min(w2, this.options.limits.frame.width, limit2)
             h2 = (w2 / w1) * h1
 
-            console.log(w2 + " " + h2)
             this.elements.frame.css({
                 "width": w2 + "px",
                 "height": h2 + "px",
@@ -1137,6 +1137,26 @@ TODO
             if (this.options.callbacks.onchange != null) {
                 return this.options.callbacks.onchange(this.entries)
             }
+            if (this.options.target_element != null) {
+                var r = this.elements.image.height / this.options.limits.frame.height;
+                $(this.options.target_element).val(
+                    JSON.stringify(
+                        this.entries.filter(function(e) {
+                            return e[0] !== null;
+                        }).map(function(e) { 
+                            return [ 
+                                Math.floor(e.pixels.left * r), 
+                                Math.floor(e.pixels.top * r), 
+                                Math.floor(e.pixels.width * r), 
+                                Math.floor(e.pixels.height * r) 
+                            ]
+                        }
+                )));
+            }
+        }
+
+        BBoxAnnotator.prototype.min_entries = function() {
+            
         }
 
         BBoxAnnotator.prototype.delete_entry = function(index, parent_index) {

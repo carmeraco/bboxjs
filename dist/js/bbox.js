@@ -1138,7 +1138,7 @@ TODO
                 return this.options.callbacks.onchange(this.entries)
             }
             if (this.options.target_element != null) {
-                var r = this.elements.image.height / this.options.limits.frame.height;
+                var r = this.elements.image.height / this.elements.container.height();
                 $(this.options.target_element).val(
                     JSON.stringify(
                         this.entries.filter(function(e) {
